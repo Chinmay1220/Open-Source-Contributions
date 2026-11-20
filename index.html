@@ -1,117 +1,13 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f3eee5">
-  <meta name="description" content="The story behind Chinmay Sawant's merged Hugging Face cache scanner fix, shipped in huggingface_hub v1.20.0.">
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="A Windows cache scanning fix · Open Source Contributions">
-  <meta property="og:description" content="How a Hugging Face cache scanner fix was merged and shipped in huggingface_hub v1.20.0.">
-  <title>A Windows cache scanning fix · Open Source Contributions</title>
-  <style>
-    :root { color-scheme: light; --ink:#20251f; --muted:#687069; --paper:#f3eee5; --card:#fffdf8; --line:#ded8cd; --green:#385c43; --lime:#cfe36a; --orange:#e97a4b; }
-    * { box-sizing:border-box; }
-    html { scroll-behavior:smooth; }
-    body { margin:0; background:var(--paper); color:var(--ink); font:16px/1.65 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
-    a { color:inherit; }
-    .shell { width:min(1120px, calc(100% - 40px)); margin:0 auto; }
-    .topbar { display:flex; align-items:center; justify-content:space-between; padding:26px 0; border-bottom:1px solid var(--line); }
-    .brand { display:flex; align-items:center; gap:12px; font-size:12px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
-    .mark { display:grid; place-items:center; width:38px; height:38px; border-radius:12px; background:var(--green); color:var(--lime); font-size:11px; letter-spacing:.04em; }
-    .topnote { color:var(--muted); font-size:13px; }
-    main { padding:64px 0 72px; }
-    .hero { display:grid; grid-template-columns:minmax(0, 1.35fr) minmax(250px, .65fr); gap:52px; align-items:end; }
-    .eyebrow { display:flex; align-items:center; gap:10px; margin:0 0 20px; color:var(--green); font-size:12px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }
-    .eyebrow:before { content:""; width:24px; height:2px; background:var(--orange); }
-    h1 { max-width:760px; margin:0; font-family:Georgia, "Times New Roman", serif; font-size:clamp(48px, 7vw, 82px); font-weight:500; letter-spacing:-.055em; line-height:.99; }
-    .lede { max-width:680px; margin:26px 0 0; color:#505850; font-size:18px; line-height:1.7; }
-    .release-card { position:relative; overflow:hidden; padding:25px; border-radius:18px; background:var(--green); color:#fffdf8; }
-    .release-card:after { content:""; position:absolute; width:150px; height:150px; right:-48px; top:-60px; border:1px solid rgba(255,255,255,.18); border-radius:50%; box-shadow:0 0 0 18px rgba(255,255,255,.04), 0 0 0 38px rgba(255,255,255,.03); }
-    .status { display:inline-flex; align-items:center; gap:7px; color:var(--lime); font-size:11px; font-weight:800; letter-spacing:.13em; text-transform:uppercase; }
-    .dot { width:7px; height:7px; border-radius:50%; background:var(--lime); }
-    .release-card h2 { position:relative; z-index:1; margin:20px 0 4px; font-size:30px; letter-spacing:-.04em; }
-    .release-card p { position:relative; z-index:1; margin:0; color:#d9e1d8; font-size:14px; }
-    .actions { display:flex; flex-wrap:wrap; gap:12px; margin-top:30px; }
-    .button { display:inline-flex; align-items:center; justify-content:center; min-height:46px; padding:0 17px; border:1px solid var(--green); border-radius:999px; background:var(--green); color:white; font-size:13px; font-weight:750; text-decoration:none; transition:transform .18s ease, background .18s ease; }
-    .button:hover { transform:translateY(-2px); background:#294a34; }
-    .button.secondary { background:transparent; color:var(--green); }
-    .button.secondary:hover { background:#e8e2d7; }
-    .rule { height:1px; margin:68px 0 34px; background:var(--line); }
-    .story-head { display:flex; align-items:baseline; justify-content:space-between; gap:24px; margin-bottom:25px; }
-    .story-head h2 { margin:0; font-family:Georgia, "Times New Roman", serif; font-size:32px; font-weight:500; letter-spacing:-.035em; }
-    .story-head span { color:var(--muted); font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
-    .story-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; }
-    .story-card { min-height:228px; padding:24px; border:1px solid var(--line); border-radius:15px; background:var(--card); }
-    .story-card .number { color:var(--orange); font-family:Georgia, "Times New Roman", serif; font-size:16px; }
-    .story-card h3 { margin:22px 0 9px; font-size:18px; letter-spacing:-.02em; }
-    .story-card p { margin:0; color:#596159; font-size:14px; line-height:1.75; }
-    .closing { display:grid; grid-template-columns:1fr auto; gap:26px; align-items:center; margin-top:18px; padding:27px 30px; border-radius:16px; background:#e7e1d6; }
-    .closing p { max-width:670px; margin:0; color:#4d574e; font-size:14px; }
-    .closing strong { color:var(--ink); }
-    .closing a { white-space:nowrap; color:var(--green); font-size:13px; font-weight:800; text-decoration-thickness:1px; text-underline-offset:4px; }
-    footer { display:flex; justify-content:space-between; gap:16px; padding:24px 0 32px; border-top:1px solid var(--line); color:var(--muted); font-size:12px; }
-    footer a { color:var(--green); text-decoration:none; }
-    @media (max-width:760px) { .shell{width:min(100% - 30px, 620px)} main{padding:44px 0 48px}.hero{grid-template-columns:1fr;gap:30px}.release-card{max-width:440px}.rule{margin:48px 0 26px}.story-grid{grid-template-columns:1fr}.story-card{min-height:0}.story-card h3{margin-top:13px}.closing{grid-template-columns:1fr;padding:22px}.story-head{align-items:flex-start;flex-direction:column;gap:4px} }
-    @media (prefers-reduced-motion:reduce) { html{scroll-behavior:auto} .button{transition:none} }
-  </style>
+  <meta http-equiv="refresh" content="0; url=/Open-Source-Contributions/Hugging-Face/">
+  <meta name="robots" content="noindex,follow">
+  <title>Open Source Contributions</title>
+  <script>window.location.replace('/Open-Source-Contributions/Hugging-Face/');</script>
 </head>
 <body>
-  <div class="shell">
-    <header class="topbar">
-      <div class="brand"><span class="mark" aria-hidden="true">OSS</span><span>Open Source Contributions</span></div>
-      <div class="topnote">Hugging Face Hub · PR #4357</div>
-    </header>
-    <main>
-      <section class="hero" aria-labelledby="page-title">
-        <div>
-          <p class="eyebrow">Contribution story</p>
-          <h1 id="page-title">A Windows cache issue, fixed at the scanner.</h1>
-          <p class="lede">I recently made an open-source contribution to Hugging Face, and it has been merged and shipped in <strong>huggingface_hub v1.20.0</strong>.</p>
-          <div class="actions">
-            <a class="button" href="https://github.com/huggingface/huggingface_hub/pull/4357">View merged PR <span aria-hidden="true">&nbsp;↗</span></a>
-            <a class="button secondary" href="https://github.com/huggingface/huggingface_hub/releases/tag/v1.20.0">View v1.20.0 release <span aria-hidden="true">&nbsp;↗</span></a>
-          </div>
-        </div>
-        <aside class="release-card" aria-label="Release status">
-          <div class="status"><span class="dot" aria-hidden="true"></span> Merged and released</div>
-          <h2>v1.20.0</h2>
-          <p>huggingface_hub · Hugging Face</p>
-        </aside>
-      </section>
-      <div class="rule" role="presentation"></div>
-      <section aria-labelledby="story-title">
-        <div class="story-head">
-          <h2 id="story-title">The story behind the fix</h2>
-          <span>Problem · approach · outcome</span>
-        </div>
-        <div class="story-grid">
-          <article class="story-card">
-            <span class="number">01</span>
-            <h3>The problem</h3>
-            <p>On Windows, the model cache scanner could flag healthy caches as corrupted and sometimes fail to list cached models.</p>
-          </article>
-          <article class="story-card">
-            <span class="number">02</span>
-            <h3>The approach</h3>
-            <p>I initially suggested a separate command to diagnose cache issues. After discussing it with the maintainer, I saw that fixing the scanner itself was the better solution.</p>
-          </article>
-          <article class="story-card">
-            <span class="number">03</span>
-            <h3>The outcome</h3>
-            <p>I updated the scanner to handle Windows-generated metadata correctly and added a regression test. The PR was reviewed, merged, and included in the release.</p>
-          </article>
-        </div>
-        <div class="closing">
-          <p><strong>One small fix, a more reliable cache scan.</strong><br>The change is part of Hugging Face Hub and helps keep healthy Windows caches from being mistaken for corrupted ones.</p>
-          <a href="https://github.com/huggingface/huggingface_hub/pull/4357">Read PR #4357&nbsp; ↗</a>
-        </div>
-      </section>
-    </main>
-    <footer>
-      <span>Open-source contribution by Chinmay1220</span>
-      <a href="https://github.com/Chinmay1220/Open-Source-Contributions">View repository</a>
-    </footer>
-  </div>
+  <p>Opening the Hugging Face contribution story. <a href="/Open-Source-Contributions/Hugging-Face/">Continue to the page</a>.</p>
 </body>
 </html>
