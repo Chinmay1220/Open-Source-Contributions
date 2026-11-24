@@ -2,12 +2,82 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="refresh" content="0; url=/Open-Source-Contributions/Hugging-Face/">
-  <meta name="robots" content="noindex,follow">
-  <title>Open Source Contributions</title>
-  <script>window.location.replace('/Open-Source-Contributions/Hugging-Face/');</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Open Source Contributions | Chinmay Sawant</title>
+  <meta name="description" content="Write-ups of Chinmay Sawant's merged pull requests to Apache Airflow and Hugging Face.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://chinmay1220.github.io/Open-Source-Contributions/">
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=switzer@400,500&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap">
+  <style>
+    :root { --ink: #002f9e; --paper: #f7f1e1; --text: #1f1d1a; --line: rgba(31, 29, 26, 0.14); }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--paper);
+      color: var(--text);
+      font: 400 17px/1.5 "Switzer", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    main { width: min(100% - 48px, 1080px); margin: 0 auto; padding: clamp(48px, 10vh, 120px) 0 96px; }
+    .kicker { margin: 0 0 14px; font-size: 13px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); }
+    h1 { margin: 0 0 16px; font: 400 clamp(44px, 7vw, 80px)/1 "Instrument Serif", Georgia, serif; color: var(--ink); letter-spacing: -0.01em; }
+    .lede { margin: 0 0 clamp(36px, 7vh, 64px); max-width: 40rem; font-size: 19px; color: rgba(31, 29, 26, 0.72); }
+    ol { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+    li { border-bottom: 1px solid var(--line); }
+    li a {
+      display: grid;
+      grid-template-columns: 11rem minmax(0, 1fr) auto;
+      align-items: baseline;
+      gap: 6px 32px;
+      padding: 28px 4px;
+      color: inherit;
+      text-decoration: none;
+    }
+    li a:hover .h2, li a:focus-visible .h2 { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.12em; }
+    li a:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; border-radius: 4px; }
+    .project { font-size: 14px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); }
+    .h2 { display: block; margin: 0 0 6px; font: 400 clamp(26px, 3vw, 34px)/1.1 "Instrument Serif", Georgia, serif; color: var(--text); }
+    .what { display: block; margin: 0; color: rgba(31, 29, 26, 0.68); }
+    .status { white-space: nowrap; font-size: 14px; color: rgba(31, 29, 26, 0.6); text-align: right; }
+    .chip { display: inline-block; margin-bottom: 6px; padding: 3px 10px; border-radius: 999px; background: #8250df; color: #fff; font-size: 13px; font-weight: 500; }
+    @media (max-width: 760px) {
+      li a { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+      .status { text-align: left; }
+    }
+  </style>
 </head>
 <body>
-  <p>Opening the Hugging Face contribution story. <a href="/Open-Source-Contributions/Hugging-Face/">Continue to the page</a>.</p>
+  <main>
+    <p class="kicker">Open source contributions</p>
+    <h1>Chinmay Sawant</h1>
+    <p class="lede">Write-ups of pull requests I've had merged into open source projects: what the problem was, what I changed and how the review went.</p>
+    <ol>
+      <li>
+        <a href="./Airflow/">
+          <span class="project">Apache Airflow</span>
+          <span>
+            <span class="h2" role="heading" aria-level="2">Fix ADLS ObjectStoragePath connection parsing</span>
+            <span class="what">Azure Data Lake service principal connections for ObjectStoragePath, fixed with every existing connection kept on its old path.</span>
+          </span>
+          <span class="status"><span class="chip">#68344 Merged</span><br>Nov 20, 2026</span>
+        </a>
+      </li>
+      <li>
+        <a href="./Hugging-Face/">
+          <span class="project">Hugging Face</span>
+          <span>
+            <span class="h2" role="heading" aria-level="2">Ignore Windows metadata files in cache scan</span>
+            <span class="what">The cache scanner stopped reporting Windows' own files as a corrupted cache, fixed at the root cause in huggingface_hub.</span>
+          </span>
+          <span class="status"><span class="chip">#4357 Merged</span><br>Jun 16, 2026 · v1.20.0</span>
+        </a>
+      </li>
+    </ol>
+  </main>
 </body>
 </html>
